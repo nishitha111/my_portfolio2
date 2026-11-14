@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- This line makes the site scale properly on phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal portfolio of Your Name, a web developer.">
+  <title>Your Name | Web Developer</title>
+
+  <style>
+    /* ---------- 1. COLOUR AND SIZE VARIABLES ----------
+       Change a colour here and it updates across the whole site. */
+    :root {
+      --navy-900: #0a192f;   /* page background */
+      --navy-800: #112240;   /* cards, header */
+      --navy-700: #1d3557;   /* borders */
+      --orange: #ff7a1a;     /* accent colour */
+      --orange-dark: #e66500;
+      --text: #ccd6f6;       /* main text */
+      --text-muted: #8892b0; /* softer text */
+      --radius: 12px;
+      --max-width: 1100px;
+    }
+
+    /* ---------- 2. RESET AND BASE STYLES ---------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;   /* smooth scrolling when clicking menu links */
+      scroll-padding-top: 70px;  /* stops the sticky header covering section titles */
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--navy-900);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section { padding: 90px 0; }
+
+    .section-title {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+    .section-title span { color: var(--orange); }
+
+    /* ---------- 3. BUTTONS ---------- */
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 2px solid var(--orange);
+      transition: 0.25s;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn-primary { background: var(--orange); color: var(--navy-900); }
+    .btn-primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+    .btn-outline { color: var(--orange); background: transparent; }
+    .btn-outline:hover { background: rgba(255, 122, 26, 0.12); }
+
+    /* ---------- 4. HEADER AND NAVIGATION ---------- */
+    header {
+      position: sticky;      /* stays at the top while scrolling */
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 25, 47, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--navy-700);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo { font-size: 1.4rem; font-weight: 800; color: #fff; }
+    .logo span { color: var(--orange); }
+
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { color: var(--text-muted); font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+
+    /* The hamburger button is hidden on large screens */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 32px;
+      height: 24px;
+      position: relative;
+    }
+    .menu-toggle span,
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background: var(--orange);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .menu-toggle span { top: 10px; }
+    .menu-toggle span::before { top: -9px; }
+    .menu-toggle span::after { top: 9px; }
+
+    /* ---------- 5. HERO (top banner) ---------- */
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      align-items: center;
+      padding: 60px 0;
+    }
+    .hero .greeting { color: var(--orange); font-family: monospace; font-size: 1.1rem; }
+    .hero h1 { font-size: clamp(2.4rem, 7vw, 4.5rem); color: #fff; line-height: 1.1; margin: 10px 0; }
+    .hero h2 { font-size: clamp(1.4rem, 4vw, 2.4rem); color: var(--text-muted); margin-bottom: 24px; }
+    .hero p { max-width: 540px; color: var(--text-muted); margin-bottom: 36px; }
+    .hero .btn + .btn { margin-left: 12px; }
+
+    /* ---------- 6. ABOUT ---------- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+    .about-text p { margin-bottom: 16px; color: var(--text-muted); }
+
+    /* A simple placeholder circle. Replace with your photo (see notes at the bottom). */
+    .avatar {
+      width: 100%;
+      max-width: 260px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), #ffb26b);
+      display: grid;
+      place-items: center;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--navy-900);
+      box-shadow: 0 0 0 8px var(--navy-800), 0 0 0 10px var(--orange);
+    }
+
+    /* ---------- 7. SKILLS ---------- */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+    }
+    .skill {
+      background: var(--navy-800);
+      border: 1px solid var(--navy-700);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      font-weight: 600;
+      color: #fff;
+      transition: 0.25s;
+    }
+    .skill:hover { transform: translateY(-5px); border-color: var(--orange); color: var(--orange); }
+    .skill small { display: block; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+
+    /* ---------- 8. PROJECTS ---------- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 28px;
+    }
+    .card {
+      background: var(--navy-800);
+      border: 1px solid var(--navy-700);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: 0.25s;
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4); }
+
+    .card-img {
+      height: 160px;
+      display: grid;
+      place-items: center;
+      font-size: 3rem;
+      background: linear-gradient(135deg, var(--navy-700), var(--navy-800));
+      border-bottom: 3px solid var(--orange);
+    }
+    .card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+    .card-body h3 { color: #fff; margin-bottom: 8px; }
+    .card-body p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; flex: 1; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+    .tags li {
+      font-size: 0.8rem;
+      font-family: monospace;
+      color: var(--orange);
+      background: rgba(255, 122, 26, 0.1);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .card-link { color: var(--orange); font-weight: 600; }
+    .card-link:hover { text-decoration: underline; }
+
+    /* ---------- 9. CONTACT ---------- */
+    .contact { text-align: center; }
+    .contact p { max-width: 520px; margin: 0 auto 30px; color: var(--text-muted); }
+    .socials { margin-top: 36px; display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; }
+    .socials a { color: var(--text-muted); transition: color 0.2s; }
+    .socials a:hover { color: var(--orange); }
+
+    /* ---------- 10. FOOTER ---------- */
+    footer {
+      text-align: center;
+      padding: 28px 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--navy-700);
+    }
+
+    /* ---------- 11. RESPONSIVE: tablets and phones ----------
+       Everything inside this block only applies on screens 768px wide or less. */
+    @media (max-width: 768px) {
+      section { padding: 70px 0; }
+
+      .menu-toggle { display: block; }
+
+      /* The menu becomes a dropdown panel under the header */
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--navy-800);
+        border-bottom: 1px solid var(--navy-700);
+        max-height: 0;          /* closed by default */
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+      .nav-links.open { max-height: 320px; }  /* JavaScript adds the "open" class */
+      .nav-links a { display: block; padding: 16px 24px; border-top: 1px solid var(--navy-700); }
+
+      /* Turn the hamburger into an X when open */
+      .menu-toggle.open span { background: transparent; }
+      .menu-toggle.open span::before { top: 0; transform: rotate(45deg); }
+      .menu-toggle.open span::after { top: 0; transform: rotate(-45deg); }
+
+      .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .about-grid .avatar { order: -1; max-width: 200px; font-size: 4rem; }
+
+      .hero .btn { display: block; text-align: center; }
+      .hero .btn + .btn { margin: 14px 0 0; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========== HEADER / NAV ========== -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#home" class="logo">Your<span>Name</span></a>
+
+        <!-- The three-line hamburger button (only visible on phones) -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="home">
+      <div class="container">
+        <p class="greeting">Hi, my name is</p>
+        <h1>Your Name.</h1>
+        <h2>I build things for the web.</h2>
+        <p>
+          I'm a beginner web developer who loves turning ideas into clean, responsive websites.
+          Currently learning and building one project at a time.
+        </p>
+        <a href="#projects" class="btn btn-primary">View my work</a>
+        <a href="#contact" class="btn btn-outline">Get in touch</a>
+      </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title"><span>01.</span> About Me</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              Hello! I'm Your Name, a developer in training who enjoys making websites that look good
+              and work well on every device. I started learning HTML and CSS recently and I've been
+              hooked ever since.
+            </p>
+            <p>
+              When I'm not coding, you'll find me [your hobby here: reading, playing cricket,
+              sketching, exploring new music]. I'm always looking for a chance to learn and
+              collaborate on interesting projects.
+            </p>
+            <p>I'm currently open to internships, freelance work and learning opportunities.</p>
+          </div>
+          <!-- Replace the letters with your initials, or swap this for an <img> tag -->
+          <div class="avatar" aria-hidden="true">YN</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SKILLS ========== -->
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title"><span>02.</span> Skills</h2>
+        <div class="skills-grid">
+          <div class="skill">HTML5 <small>Comfortable</small></div>
+          <div class="skill">CSS3 <small>Comfortable</small></div>
+          <div class="skill">Responsive Design <small>Learning</small></div>
+          <div class="skill">JavaScript <small>Learning</small></div>
+          <div class="skill">Git &amp; GitHub <small>Learning</small></div>
+          <div class="skill">Problem Solving <small>Always improving</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROJECTS ========== -->
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title"><span>03.</span> Projects</h2>
+        <div class="projects-grid">
+
+          <!-- Project card 1: copy this block to add more projects -->
+          <article class="card">
+            <div class="card-img" aria-hidden="true">🌦️</div>
+            <div class="card-body">
+              <h3>Weather Dashboard</h3>
+              <p>A clean, mobile-friendly page that shows the weather for any city. Built to practise layouts and working with data.</p>
+              <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <a href="#" class="card-link">View project →</a>
+            </div>
+          </article>
+
+          <!-- Project card 2 -->
+          <article class="card">
+            <div class="card-img" aria-hidden="true">✅</div>
+            <div class="card-body">
+              <h3>To-Do List App</h3>
+              <p>A simple task manager where you can add, complete and delete tasks. My first step into interactive web pages.</p>
+              <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <a href="#" class="card-link">View project →</a>
+            </div>
+          </article>
+
+          <!-- Project card 3 -->
+          <article class="card">
+            <div class="card-img" aria-hidden="true">🍜</div>
+            <div class="card-body">
+              <h3>Restaurant Landing Page</h3>
+              <p>A responsive one-page website for a fictional restaurant, focused on typography, colour and layout.</p>
+              <ul class="tags"><li>HTML</li><li>CSS</li><li>Flexbox</li><li>Grid</li></ul>
+              <a href="#" class="card-link">View project →</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title"><span>04.</span> Get In Touch</h2>
+        <p>
+          My inbox is always open. Whether you have a question, a project idea, or just want to say hi,
+          I'll do my best to get back to you!
+        </p>
+        <!-- Change the email address below to your own -->
+        <a href="mailto:you@example.com" class="btn btn-primary">Say Hello</a>
+
+        <div class="socials">
+          <a href="https://github.com/your-username" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/your-username" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://twitter.com/your-username" target="_blank" rel="noopener">Twitter / X</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Designed &amp; built by Your Name · <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT (just two small jobs) ========== -->
+  <script>
+    // 1. Open and close the mobile menu
+    const toggle = document.getElementById("menuToggle");
+    const links = document.getElementById("navLinks");
+
+    toggle.addEventListener("click", () => {
+      const isOpen = links.classList.toggle("open");
+      toggle.classList.toggle("open", isOpen);
+      toggle.setAttribute("aria-expanded", isOpen);
+    });
+
+    // Close the menu after tapping a link
+    links.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        links.classList.remove("open");
+        toggle.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // 2. Put the current year in the footer automatically
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
